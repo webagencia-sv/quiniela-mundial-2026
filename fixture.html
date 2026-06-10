@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fase de Grupos — Quiniela Mundial 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold:#F5C518; --red:#C1121F; --dark:#0A0A0F; --dark2:#111118;
+    --dark3:#1A1A25; --white:#F8F8F2; --gray:#9999AA; --green:#2ECC71;
+  }
+  *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--dark); color:var(--white); font-family:'Barlow',sans-serif; min-height:100vh; }
+  .container { max-width:860px; margin:0 auto; padding:0 16px 60px; }
+
+  /* HERO */
+  .hero { text-align:center; padding:44px 0 32px; }
+  .hero-badge { display:inline-block; background:var(--red); color:var(--white); font-family:'Bebas Neue',cursive; font-size:12px; letter-spacing:4px; padding:5px 16px; border-radius:2px; margin-bottom:14px; }
+  .hero-title { font-family:'Bebas Neue',cursive; font-size:clamp(44px,10vw,80px); line-height:0.9; }
+  .hero-title span { display:block; color:var(--gold); font-size:clamp(18px,4vw,28px); letter-spacing:5px; }
+  .hero-line { width:60px; height:3px; background:linear-gradient(90deg,var(--gold),var(--red)); margin:16px auto 0; }
+
+  /* STATS */
+  .stats { display:flex; justify-content:center; gap:24px; margin:24px 0 28px; flex-wrap:wrap; }
+  .stat { text-align:center; }
+  .stat-n { font-family:'Bebas Neue',cursive; font-size:32px; color:var(--gold); line-height:1; }
+  .stat-l { font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); }
+
+  /* FILTERS */
+  .filters { background:var(--dark3); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:16px 18px; margin-bottom:20px; }
+  .filters-title { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--gray); margin-bottom:12px; }
+  .filter-row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .filter-row + .filter-row { margin-top:10px; }
+
+  .filter-label { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--gray); width:60px; flex-shrink:0; }
+
+  .search-input {
+    flex:1; min-width:180px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+    border-radius:6px; padding:8px 14px; color:var(--white); font-family:'Barlow',sans-serif; font-size:13px;
+    outline:none; transition:border-color 0.2s;
+  }
+  .search-input:focus { border-color:var(--gold); }
+  .search-input::placeholder { color:var(--gray); }
+
+  .filter-btns { display:flex; gap:6px; flex-wrap:wrap; }
+
+  .fbtn {
+    font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:600; letter-spacing:1px;
+    text-transform:uppercase; padding:6px 14px; border-radius:20px; cursor:pointer; border:1px solid;
+    transition:all 0.2s; background:transparent; color:var(--gray); border-color:rgba(255,255,255,0.12);
+  }
+  .fbtn:hover { color:var(--white); border-color:rgba(255,255,255,0.3); }
+  .fbtn.active { background:var(--gold); color:var(--dark); border-color:var(--gold); }
+  .fbtn.active-red { background:var(--red); color:var(--white); border-color:var(--red); }
+
+  .btn-clear { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px; text-transform:uppercase; padding:6px 14px; border-radius:20px; cursor:pointer; border:1px solid rgba(193,18,31,0.4); background:transparent; color:#FF6B6B; transition:all 0.2s; }
+  .btn-clear:hover { background:rgba(193,18,31,0.1); }
+
+  /* RESULTS COUNT */
+  .results-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding:0 2px; }
+  .results-count { font-family:'Barlow Condensed',sans-serif; font-size:13px; color:var(--gray); letter-spacing:1px; }
+  .results-count span { color:var(--gold); font-weight:700; }
+
+  /* TABLE */
+  .table-wrap { background:var(--dark3); border:1px solid rgba(255,255,255,0.06); border-radius:10px; overflow:hidden; }
+
+  .t-header { display:grid; grid-template-columns:44px 90px 64px 1fr 36px 1fr 90px; padding:10px 16px; background:rgba(245,197,24,0.08); border-bottom:1px solid rgba(245,197,24,0.12); gap:8px; }
+  .th { font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); }
+  .th.center { text-align:center; }
+  .th.right { text-align:right; }
+
+  .match-row { display:grid; grid-template-columns:44px 90px 64px 1fr 36px 1fr 90px; padding:11px 16px; border-bottom:1px solid rgba(255,255,255,0.04); align-items:center; gap:8px; transition:background 0.15s; }
+  .match-row:last-child { border-bottom:none; }
+  .match-row:hover { background:rgba(255,255,255,0.02); }
+  .match-row.hidden { display:none; }
+
+  .col-num { font-family:'Bebas Neue',cursive; font-size:20px; color:var(--gold); text-align:center; line-height:1; }
+  .col-date { font-family:'Barlow Condensed',sans-serif; font-size:12px; color:var(--gray); }
+  .col-time { font-family:'Bebas Neue',cursive; font-size:18px; color:var(--white); text-align:center; }
+  .col-home { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; letter-spacing:0.5px; text-align:right; }
+  .col-vs { font-family:'Barlow Condensed',sans-serif; font-size:11px; color:var(--gray); text-align:center; letter-spacing:1px; }
+  .col-away { font-family:'Barlow Condensed',sans-serif; font-size:14px; letter-spacing:0.5px; }
+
+  .col-group { text-align:right; }
+  .group-badge { display:inline-block; font-family:'Bebas Neue',cursive; font-size:13px; letter-spacing:1px; padding:2px 8px; border-radius:3px; }
+  .gA { background:rgba(231,76,60,0.2);   color:#E74C3C; }
+  .gB { background:rgba(230,126,34,0.2);  color:#E67E22; }
+  .gC { background:rgba(241,196,15,0.2);  color:#F1C40F; }
+  .gD { background:rgba(46,204,113,0.2);  color:#2ECC71; }
+  .gE { background:rgba(26,188,156,0.2);  color:#1ABC9C; }
+  .gF { background:rgba(52,152,219,0.2);  color:#3498DB; }
+  .gG { background:rgba(155,89,182,0.2);  color:#9B59B6; }
+  .gH { background:rgba(52,73,94,0.4);    color:#BDC3C7; }
+  .gI { background:rgba(193,18,31,0.2);   color:#E74C3C; }
+  .gJ { background:rgba(245,197,24,0.2);  color:#F5C518; }
+  .gK { background:rgba(46,204,113,0.15); color:#27AE60; }
+  .gL { background:rgba(52,152,219,0.15); color:#2980B9; }
+
+  .no-results { text-align:center; padding:40px 20px; color:var(--gray); font-family:'Barlow Condensed',sans-serif; font-size:16px; letter-spacing:1px; display:none; }
+
+  /* FOOTER */
+  .footer { text-align:center; padding-top:36px; border-top:1px solid rgba(255,255,255,0.06); margin-top:36px; }
+  .hero-badge2 { display:inline-block; background:var(--gold); color:var(--dark); font-family:'Bebas Neue',cursive; font-size:13px; letter-spacing:4px; padding:6px 20px; border-radius:2px; }
+
+  @media(max-width:580px) {
+    .t-header { grid-template-columns:36px 80px 52px 1fr 28px 1fr 70px; padding:8px 10px; gap:4px; }
+    .match-row { grid-template-columns:36px 80px 52px 1fr 28px 1fr 70px; padding:10px 10px; gap:4px; }
+    .col-home, .col-away { font-size:12px; }
+    .col-date { font-size:10px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="hero">
+    <div class="hero-badge">⚽ MUNDIAL 2026</div>
+    <h1 class="hero-title">Fase de Grupos<span>72 Partidos · Jun 11 – Jun 27</span></h1>
+    <div class="hero-line"></div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-n">72</div><div class="stat-l">Partidos</div></div>
+    <div class="stat"><div class="stat-n">12</div><div class="stat-l">Grupos</div></div>
+    <div class="stat"><div class="stat-n">48</div><div class="stat-l">Equipos</div></div>
+    <div class="stat"><div class="stat-n">17</div><div class="stat-l">Días</div></div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <div class="filters-title">🔍 Filtros de búsqueda</div>
+    <div class="filter-row">
+      <span class="filter-label">Buscar</span>
+      <input type="text" class="search-input" id="searchInput" placeholder="Equipo, grupo, fecha...">
+      <button class="btn-clear" id="btnClear">✕ Limpiar</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Grupo</span>
+      <div class="filter-btns" id="groupFilters">
+        <button class="fbtn active" data-group="all">Todos</button>
+        <button class="fbtn" data-group="A">A</button>
+        <button class="fbtn" data-group="B">B</button>
+        <button class="fbtn" data-group="C">C</button>
+        <button class="fbtn" data-group="D">D</button>
+        <button class="fbtn" data-group="E">E</button>
+        <button class="fbtn" data-group="F">F</button>
+        <button class="fbtn" data-group="G">G</button>
+        <button class="fbtn" data-group="H">H</button>
+        <button class="fbtn" data-group="I">I</button>
+        <button class="fbtn" data-group="J">J</button>
+        <button class="fbtn" data-group="K">K</button>
+        <button class="fbtn" data-group="L">L</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Fecha</span>
+      <div class="filter-btns" id="dateFilters">
+        <button class="fbtn active" data-date="all">Todas</button>
+        <button class="fbtn" data-date="11 jun">11 Jun</button>
+        <button class="fbtn" data-date="12 jun">12 Jun</button>
+        <button class="fbtn" data-date="13 jun">13 Jun</button>
+        <button class="fbtn" data-date="14 jun">14 Jun</button>
+        <button class="fbtn" data-date="15 jun">15 Jun</button>
+        <button class="fbtn" data-date="16 jun">16 Jun</button>
+        <button class="fbtn" data-date="17 jun">17 Jun</button>
+        <button class="fbtn" data-date="18 jun">18 Jun</button>
+        <button class="fbtn" data-date="19 jun">19 Jun</button>
+        <button class="fbtn" data-date="20 jun">20 Jun</button>
+        <button class="fbtn" data-date="21 jun">21 Jun</button>
+        <button class="fbtn" data-date="22 jun">22 Jun</button>
+        <button class="fbtn" data-date="23 jun">23 Jun</button>
+        <button class="fbtn" data-date="24 jun">24 Jun</button>
+        <button class="fbtn" data-date="25 jun">25 Jun</button>
+        <button class="fbtn" data-date="26 jun">26 Jun</button>
+        <button class="fbtn" data-date="27 jun">27 Jun</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="results-bar">
+    <div class="results-count">Mostrando <span id="countVisible">72</span> de 72 partidos</div>
+  </div>
+
+  <div class="table-wrap">
+    <div class="t-header">
+      <span class="th center">#</span>
+      <span class="th">Fecha</span>
+      <span class="th center">Hora SV</span>
+      <span class="th right">Local</span>
+      <span class="th center">vs</span>
+      <span class="th">Visitante</span>
+      <span class="th right">Grupo</span>
+    </div>
+    <div id="matchList">
+      <!-- matches injected by JS -->
+    </div>
+    <div class="no-results" id="noResults">Sin resultados para esta búsqueda</div>
+  </div>
+
+  <footer class="footer">
+    <div class="hero-badge2">⚽ EL SALVADOR · GMT-6</div>
+  </footer>
+</div>
+
+<script>
+const MATCHES = [
+  {n:1,  date:"jue 11 jun", time:"1pm",  home:"México",        away:"Sudáfrica",     group:"A"},
+  {n:2,  date:"jue 11 jun", time:"8pm",  home:"Corea del Sur", away:"Rep. Checa",    group:"A"},
+  {n:3,  date:"vie 12 jun", time:"1pm",  home:"Canadá",        away:"Bosnia-Herz",   group:"A"},
+  {n:4,  date:"vie 12 jun", time:"7pm",  home:"EE.UU.",        away:"Paraguay",      group:"A"},
+  {n:5,  date:"sáb 13 jun", time:"1pm",  home:"Qatar",         away:"Suiza",         group:"B"},
+  {n:6,  date:"sáb 13 jun", time:"4pm",  home:"Brasil",        away:"Marruecos",     group:"B"},
+  {n:7,  date:"sáb 13 jun", time:"7pm",  home:"Haití",         away:"Escocia",       group:"B"},
+  {n:8,  date:"sáb 13 jun", time:"10pm", home:"Australia",     away:"Turquía",       group:"B"},
+  {n:9,  date:"dom 14 jun", time:"11am", home:"Alemania",      away:"Curazao",       group:"C"},
+  {n:10, date:"dom 14 jun", time:"2pm",  home:"Países Bajos",  away:"Japón",         group:"C"},
+  {n:11, date:"dom 14 jun", time:"5pm",  home:"Costa de Marfil",away:"Ecuador",      group:"C"},
+  {n:12, date:"dom 14 jun", time:"8pm",  home:"Túnez",         away:"Suecia",        group:"C"},
+  {n:13, date:"lun 15 jun", time:"10am", home:"España",        away:"Cabo Verde",    group:"D"},
+  {n:14, date:"lun 15 jun", time:"1pm",  home:"Bélgica",       away:"Egipto",        group:"D"},
+  {n:15, date:"lun 15 jun", time:"4pm",  home:"Arabia Saudita",away:"Uruguay",       group:"D"},
+  {n:16, date:"lun 15 jun", time:"7pm",  home:"Irán",          away:"Nueva Zelanda", group:"D"},
+  {n:17, date:"mar 16 jun", time:"1pm",  home:"Francia",       away:"Senegal",       group:"E"},
+  {n:18, date:"mar 16 jun", time:"4pm",  home:"Irak",          away:"Noruega",       group:"E"},
+  {n:19, date:"mar 16 jun", time:"7pm",  home:"Argentina",     away:"Argelia",       group:"E"},
+  {n:20, date:"mar 16 jun", time:"10pm", home:"Austria",       away:"Jordania",      group:"E"},
+  {n:21, date:"mié 17 jun", time:"11am", home:"Portugal",      away:"Congo DR",      group:"F"},
+  {n:22, date:"mié 17 jun", time:"2pm",  home:"Inglaterra",    away:"Croacia",       group:"F"},
+  {n:23, date:"mié 17 jun", time:"5pm",  home:"Ghana",         away:"Panamá",        group:"F"},
+  {n:24, date:"mié 17 jun", time:"8pm",  home:"Uzbekistán",    away:"Colombia",      group:"F"},
+  {n:25, date:"jue 18 jun", time:"10am", home:"Rep. Checa",    away:"Sudáfrica",     group:"G"},
+  {n:26, date:"jue 18 jun", time:"1pm",  home:"Suiza",         away:"Bosnia-Herz",   group:"G"},
+  {n:27, date:"jue 18 jun", time:"4pm",  home:"Canadá",        away:"Qatar",         group:"G"},
+  {n:28, date:"jue 18 jun", time:"7pm",  home:"México",        away:"Corea del Sur", group:"G"},
+  {n:29, date:"vie 19 jun", time:"1pm",  home:"Escocia",       away:"Marruecos",     group:"H"},
+  {n:30, date:"vie 19 jun", time:"1pm",  home:"EE.UU.",        away:"Australia",     group:"H"},
+  {n:31, date:"vie 19 jun", time:"7pm",  home:"Brasil",        away:"Haití",         group:"H"},
+  {n:32, date:"vie 19 jun", time:"10pm", home:"Turquía",       away:"Paraguay",      group:"H"},
+  {n:33, date:"sáb 20 jun", time:"11am", home:"Países Bajos",  away:"Suecia",        group:"I"},
+  {n:34, date:"sáb 20 jun", time:"2pm",  home:"Alemania",      away:"Costa de Marfil",group:"I"},
+  {n:35, date:"sáb 20 jun", time:"6pm",  home:"Ecuador",       away:"Curazao",       group:"I"},
+  {n:36, date:"sáb 20 jun", time:"10pm", home:"Túnez",         away:"Japón",         group:"I"},
+  {n:37, date:"dom 21 jun", time:"10am", home:"España",        away:"Arabia Saudita",group:"J"},
+  {n:38, date:"dom 21 jun", time:"1pm",  home:"Bélgica",       away:"Irán",          group:"J"},
+  {n:39, date:"dom 21 jun", time:"4pm",  home:"Uruguay",       away:"Cabo Verde",    group:"J"},
+  {n:40, date:"dom 21 jun", time:"7pm",  home:"Nueva Zelanda", away:"Egipto",        group:"J"},
+  {n:41, date:"lun 22 jun", time:"11am", home:"Argentina",     away:"Austria",       group:"K"},
+  {n:42, date:"lun 22 jun", time:"3pm",  home:"Francia",       away:"Irak",          group:"K"},
+  {n:43, date:"lun 22 jun", time:"6pm",  home:"Noruega",       away:"Senegal",       group:"K"},
+  {n:44, date:"lun 22 jun", time:"9pm",  home:"Jordania",      away:"Argelia",       group:"K"},
+  {n:45, date:"mar 23 jun", time:"11am", home:"Portugal",      away:"Uzbekistán",    group:"L"},
+  {n:46, date:"mar 23 jun", time:"2pm",  home:"Inglaterra",    away:"Ghana",         group:"L"},
+  {n:47, date:"mar 23 jun", time:"5pm",  home:"Panamá",        away:"Croacia",       group:"L"},
+  {n:48, date:"mar 23 jun", time:"7pm",  home:"Colombia",      away:"Congo DR",      group:"L"},
+  {n:49, date:"mié 24 jun", time:"1pm",  home:"Suiza",         away:"Canadá",        group:"A"},
+  {n:50, date:"mié 24 jun", time:"1pm",  home:"Bosnia-Herz",   away:"Qatar",         group:"B"},
+  {n:51, date:"mié 24 jun", time:"4pm",  home:"Brasil",        away:"Escocia",       group:"B"},
+  {n:52, date:"mié 24 jun", time:"4pm",  home:"Marruecos",     away:"Haití",         group:"C"},
+  {n:53, date:"mié 24 jun", time:"7pm",  home:"México",        away:"Rep. Checa",    group:"A"},
+  {n:54, date:"mié 24 jun", time:"7pm",  home:"Corea del Sur", away:"Sudáfrica",     group:"A"},
+  {n:55, date:"jue 25 jun", time:"2pm",  home:"Ecuador",       away:"Alemania",      group:"C"},
+  {n:56, date:"jue 25 jun", time:"2pm",  home:"Curazao",       away:"Costa de Marfil",group:"C"},
+  {n:57, date:"jue 25 jun", time:"5pm",  home:"Túnez",         away:"Países Bajos",  group:"C"},
+  {n:58, date:"jue 25 jun", time:"5pm",  home:"Japón",         away:"Suecia",        group:"C"},
+  {n:59, date:"jue 25 jun", time:"8pm",  home:"EE.UU.",        away:"Turquía",       group:"D"},
+  {n:60, date:"jue 25 jun", time:"8pm",  home:"Paraguay",      away:"Australia",     group:"D"},
+  {n:61, date:"vie 26 jun", time:"1pm",  home:"Noruega",       away:"Francia",       group:"E"},
+  {n:62, date:"vie 26 jun", time:"1pm",  home:"Senegal",       away:"Irak",          group:"E"},
+  {n:63, date:"vie 26 jun", time:"6pm",  home:"Uruguay",       away:"España",        group:"D"},
+  {n:64, date:"vie 26 jun", time:"6pm",  home:"Cabo Verde",    away:"Arabia Saudita",group:"D"},
+  {n:65, date:"vie 26 jun", time:"9pm",  home:"Nueva Zelanda", away:"Bélgica",       group:"D"},
+  {n:66, date:"vie 26 jun", time:"9pm",  home:"Egipto",        away:"Irán",          group:"E"},
+  {n:67, date:"sáb 27 jun", time:"1pm",  home:"Argentina",     away:"Jordania",      group:"E"},
+  {n:68, date:"sáb 27 jun", time:"1pm",  home:"Argelia",       away:"Austria",       group:"F"},
+  {n:69, date:"sáb 27 jun", time:"1pm",  home:"Portugal",      away:"Colombia",      group:"F"},
+  {n:70, date:"sáb 27 jun", time:"1pm",  home:"Congo DR",      away:"Uzbekistán",    group:"F"},
+  {n:71, date:"sáb 27 jun", time:"1pm",  home:"Inglaterra",    away:"Panamá",        group:"F"},
+  {n:72, date:"sáb 27 jun", time:"1pm",  home:"Croacia",       away:"Ghana",         group:"F"},
+];
+
+let activeGroup = 'all';
+let activeDate  = 'all';
+let searchTerm  = '';
+
+function render() {
+  const list = document.getElementById('matchList');
+  const noRes = document.getElementById('noResults');
+  const rows = list.querySelectorAll('.match-row');
+  let visible = 0;
+
+  rows.forEach(row => {
+    const g = row.dataset.group;
+    const d = row.dataset.date;
+    const txt = row.dataset.search;
+
+    const matchGroup  = activeGroup === 'all' || g === activeGroup;
+    const matchDate   = activeDate  === 'all' || d.includes(activeDate);
+    const matchSearch = !searchTerm || txt.includes(searchTerm.toLowerCase());
+
+    if (matchGroup && matchDate && matchSearch) {
+      row.classList.remove('hidden');
+      visible++;
+    } else {
+      row.classList.add('hidden');
+    }
+  });
+
+  document.getElementById('countVisible').textContent = visible;
+  noRes.style.display = visible === 0 ? 'block' : 'none';
+}
+
+function filterGroup(btn) {
+  document.querySelectorAll('#groupFilters .fbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeGroup = btn.dataset.group;
+  render();
+}
+
+function filterDate(btn) {
+  document.querySelectorAll('#dateFilters .fbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeDate = btn.dataset.date;
+  render();
+}
+
+function clearAll() {
+  activeGroup = 'all'; activeDate = 'all'; searchTerm = '';
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.fbtn[data-group]').forEach(b => b.classList.toggle('active', b.dataset.group === 'all'));
+  document.querySelectorAll('.fbtn[data-date]').forEach(b => b.classList.toggle('active', b.dataset.date === 'all'));
+  render();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  document.getElementById('searchInput').addEventListener('input', function(e) {
+    searchTerm = e.target.value.toLowerCase();
+    render();
+  });
+
+  document.getElementById('btnClear').addEventListener('click', clearAll);
+  document.getElementById('btnClear').addEventListener('touchstart', function(e) { e.preventDefault(); clearAll(); });
+
+  document.querySelectorAll('#groupFilters .fbtn').forEach(function(btn) {
+    btn.addEventListener('click', function() { filterGroup(this); });
+    btn.addEventListener('touchstart', function(e) { e.preventDefault(); filterGroup(this); });
+  });
+
+  document.querySelectorAll('#dateFilters .fbtn').forEach(function(btn) {
+    btn.addEventListener('click', function() { filterDate(this); });
+    btn.addEventListener('touchstart', function(e) { e.preventDefault(); filterDate(this); });
+  });
+
+});
+
+// Build rows immediately (before DOMContentLoaded since script is at bottom)
+const list = document.getElementById('matchList');
+MATCHES.forEach(m => {
+  const row = document.createElement('div');
+  row.className = 'match-row';
+  row.dataset.group  = m.group;
+  row.dataset.date   = m.date;
+  row.dataset.search = (m.n + ' ' + m.date + ' ' + m.time + ' ' + m.home + ' ' + m.away + ' grupo ' + m.group).toLowerCase();
+
+  row.innerHTML = `
+    <div class="col-num">${m.n}</div>
+    <div class="col-date">${m.date}</div>
+    <div class="col-time">${m.time}</div>
+    <div class="col-home">${m.home}</div>
+    <div class="col-vs">vs</div>
+    <div class="col-away">${m.away}</div>
+    <div class="col-group"><span class="group-badge g${m.group}">Grupo ${m.group}</span></div>
+  `;
+  list.appendChild(row);
+});
+</script>
+</body>
+</html>

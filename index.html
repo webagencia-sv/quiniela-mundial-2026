@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiniela Mundial 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold:#F5C518; --red:#C1121F; --dark:#0A0A0F;
+    --dark3:#1A1A25; --white:#F8F8F2; --gray:#9999AA;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--dark);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh;}
+  .container{max-width:600px;margin:0 auto;padding:0 20px 60px;}
+
+  .hero{text-align:center;padding:56px 0 44px;}
+  .hero-badge{display:inline-block;background:var(--red);color:var(--white);font-family:'Bebas Neue',cursive;font-size:12px;letter-spacing:4px;padding:5px 16px;border-radius:2px;margin-bottom:16px;}
+  .hero-title{font-family:'Bebas Neue',cursive;font-size:clamp(54px,14vw,100px);line-height:0.88;}
+  .hero-title span{display:block;color:var(--gold);font-size:clamp(20px,5vw,34px);letter-spacing:6px;}
+  .hero-line{width:70px;height:3px;background:linear-gradient(90deg,var(--gold),var(--red));margin:20px auto 16px;}
+  .hero-sub{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:3px;color:var(--gray);text-transform:uppercase;}
+
+  .nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:36px;}
+  .nav-card{background:var(--dark3);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:22px 18px;text-decoration:none;color:var(--white);transition:all 0.2s;display:flex;flex-direction:column;gap:8px;}
+  .nav-card:hover{border-color:rgba(245,197,24,0.3);background:rgba(245,197,24,0.04);transform:translateY(-2px);}
+  .nav-card.featured{grid-column:1/-1;flex-direction:row;align-items:center;border-color:rgba(245,197,24,0.25);background:linear-gradient(135deg,rgba(245,197,24,0.08),rgba(193,18,31,0.05));}
+  .nav-icon{font-size:32px;line-height:1;}
+  .nav-card.featured .nav-icon{font-size:42px;}
+  .nav-title{font-family:'Bebas Neue',cursive;font-size:20px;letter-spacing:2px;}
+  .nav-card.featured .nav-title{font-size:26px;color:var(--gold);}
+  .nav-desc{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--gray);letter-spacing:0.5px;}
+
+  .footer{text-align:center;padding-top:40px;border-top:1px solid rgba(255,255,255,0.06);margin-top:40px;}
+  .hero-badge2{display:inline-block;background:var(--gold);color:var(--dark);font-family:'Bebas Neue',cursive;font-size:13px;letter-spacing:4px;padding:6px 20px;border-radius:2px;}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+  .nav-grid{animation:fadeUp 0.5s ease 0.2s both;}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="hero">
+    <div class="hero-badge">⚽ EL SALVADOR · GMT-6</div>
+    <h1 class="hero-title">Quiniela<span>Mundial 2026</span></h1>
+    <div class="hero-line"></div>
+    <p class="hero-sub">Selecciona una sección</p>
+  </header>
+
+  <nav class="nav-grid">
+    <a href="tabla.html" class="nav-card featured">
+      <div class="nav-icon">🏆</div>
+      <div>
+        <div class="nav-title">Tabla General</div>
+        <div class="nav-desc">Puntajes actualizados · Ranking en vivo</div>
+      </div>
+    </a>
+    <a href="partidos-hoy.html" class="nav-card">
+      <div class="nav-icon">📅</div>
+      <div class="nav-title">Partidos de Hoy</div>
+      <div class="nav-desc">Mensaje del día · Límite de envío</div>
+    </a>
+    <a href="fixture.html" class="nav-card">
+      <div class="nav-icon">📋</div>
+      <div class="nav-title">Fixture Grupos</div>
+      <div class="nav-desc">72 partidos · Filtros por grupo y fecha</div>
+    </a>
+    <a href="participantes.html" class="nav-card">
+      <div class="nav-icon">👥</div>
+      <div class="nav-title">Participantes</div>
+      <div class="nav-desc">Estado · Pago · Campeón elegido</div>
+    </a>
+    <a href="instrucciones.html" class="nav-card">
+      <div class="nav-icon">📖</div>
+      <div class="nav-title">Instrucciones</div>
+      <div class="nav-desc">Reglas · Sistema de puntuación · Premios</div>
+    </a>
+  </nav>
+
+  <footer class="footer">
+    <div class="hero-badge2">⚽ EL SALVADOR · GMT-6</div>
+  </footer>
+</div>
+</body>
+</html>

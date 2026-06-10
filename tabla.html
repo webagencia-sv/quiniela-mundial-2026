@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabla General — Quiniela Mundial 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold:#F5C518; --gold2:#B8860B; --red:#C1121F; --dark:#0A0A0F;
+    --dark2:#111118; --dark3:#1A1A25; --dark4:#222232;
+    --white:#F8F8F2; --gray:#9999AA; --green:#2ECC71; --teal:#1B7A6B;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--dark);color:var(--white);font-family:'Barlow',sans-serif;font-weight:300;min-height:100vh;}
+  .container{max-width:700px;margin:0 auto;padding:0 16px 60px;}
+
+  /* HERO */
+  .hero{text-align:center;padding:44px 0 30px;}
+  .hero-badge{display:inline-block;background:var(--red);color:var(--white);font-family:'Bebas Neue',cursive;font-size:12px;letter-spacing:4px;padding:5px 16px;border-radius:2px;margin-bottom:14px;}
+  .hero-title{font-family:'Bebas Neue',cursive;font-size:clamp(44px,10vw,78px);line-height:0.9;}
+  .hero-title span{display:block;color:var(--gold);font-size:clamp(16px,4vw,26px);letter-spacing:5px;}
+  .hero-line{width:60px;height:3px;background:linear-gradient(90deg,var(--gold),var(--red));margin:16px auto 0;}
+
+  /* DAY INFO BAR */
+  .day-bar{display:flex;align-items:center;justify-content:space-between;background:var(--dark3);border:1px solid rgba(245,197,24,0.2);border-radius:8px;padding:12px 18px;margin:24px 0 20px;gap:12px;flex-wrap:wrap;}
+  .day-label{font-family:'Bebas Neue',cursive;font-size:22px;color:var(--gold);letter-spacing:2px;}
+  .day-date{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--gray);letter-spacing:2px;text-transform:uppercase;}
+  .day-matches{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--gray);letter-spacing:1px;}
+
+  /* WINNER BANNER */
+  .winner-banner{background:linear-gradient(135deg,rgba(245,197,24,0.15),rgba(193,18,31,0.08));border:1px solid rgba(245,197,24,0.4);border-radius:10px;padding:20px 22px;margin-bottom:20px;display:flex;align-items:center;gap:16px;}
+  .winner-crown{font-size:42px;flex-shrink:0;animation:pulse 2s ease infinite;}
+  .winner-info{flex:1;}
+  .winner-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:4px;}
+  .winner-name{font-family:'Bebas Neue',cursive;font-size:36px;color:var(--gold);line-height:1;letter-spacing:2px;}
+  .winner-pts{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:rgba(248,248,242,0.7);margin-top:4px;}
+  .winner-pts strong{color:var(--green);font-size:18px;}
+
+  /* TOP 5 */
+  .section-title{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:3px;color:var(--white);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+  .section-title::before{content:'';width:4px;height:22px;background:linear-gradient(180deg,var(--gold),var(--red));border-radius:2px;flex-shrink:0;}
+
+  .top5{display:flex;flex-direction:column;gap:8px;margin-bottom:28px;}
+  .top5-card{display:flex;align-items:center;gap:14px;background:var(--dark3);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 16px;transition:all 0.2s;}
+  .top5-card.rank-1{border-color:rgba(245,197,24,0.4);background:linear-gradient(135deg,rgba(245,197,24,0.08),rgba(245,197,24,0.02));}
+  .top5-card.rank-2{border-color:rgba(192,192,200,0.3);}
+  .top5-card.rank-3{border-color:rgba(205,127,50,0.3);}
+
+  .top5-rank{font-family:'Bebas Neue',cursive;font-size:28px;width:28px;text-align:center;flex-shrink:0;line-height:1;}
+  .rank-1 .top5-rank{color:var(--gold);}
+  .rank-2 .top5-rank{color:#C0C0D0;}
+  .rank-3 .top5-rank{color:#CD7F32;}
+  .rank-4 .top5-rank,.rank-5 .top5-rank{color:var(--gray);}
+
+  .top5-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;flex:1;}
+  .top5-pts-today{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--green);background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.2);border-radius:12px;padding:2px 10px;white-space:nowrap;}
+  .top5-total{font-family:'Bebas Neue',cursive;font-size:28px;color:var(--white);line-height:1;}
+
+  /* PROGRESS BAR */
+  .progress-wrap{flex:1;min-width:80px;max-width:120px;}
+  .progress-bar-bg{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
+  .progress-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--red));transition:width 1s ease;}
+
+  /* FULL TABLE */
+  .full-table{display:flex;flex-direction:column;gap:8px;}
+
+  .player-card{background:var(--dark3);border:1px solid rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;transition:all 0.2s;}
+  .player-card.day-winner{border-color:rgba(245,197,24,0.35);}
+  .player-card.is-open .card-detail{display:block;}
+
+  .card-main{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;}
+  .card-main:hover{background:rgba(255,255,255,0.02);}
+
+  .card-rank{font-family:'Bebas Neue',cursive;font-size:20px;color:var(--gray);width:24px;text-align:center;flex-shrink:0;}
+  .player-card.rank-gold .card-rank{color:var(--gold);}
+  .player-card.rank-silver .card-rank{color:#C0C0D0;}
+  .player-card.rank-bronze .card-rank{color:#CD7F32;}
+
+  .card-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;flex:1;}
+
+  .card-today-badge{font-family:'Bebas Neue',cursive;font-size:16px;padding:2px 10px;border-radius:12px;flex-shrink:0;}
+  .today-positive{background:rgba(46,204,113,0.12);color:var(--green);border:1px solid rgba(46,204,113,0.25);}
+  .today-zero{background:rgba(153,153,170,0.08);color:var(--gray);border:1px solid rgba(153,153,170,0.15);}
+
+  .card-total{font-family:'Bebas Neue',cursive;font-size:26px;line-height:1;color:var(--white);width:40px;text-align:right;flex-shrink:0;}
+
+  .card-chevron{color:var(--gray);font-size:12px;flex-shrink:0;transition:transform 0.2s;}
+  .player-card.is-open .card-chevron{transform:rotate(180deg);}
+
+  /* HISTORY BAR */
+  .card-history{padding:0 16px 4px;display:flex;gap:4px;align-items:flex-end;height:32px;}
+  .hist-bar{flex:1;background:rgba(245,197,24,0.15);border-radius:2px 2px 0 0;position:relative;min-height:4px;transition:height 0.5s ease;}
+  .hist-bar.today{background:var(--gold);}
+  .hist-bar:hover::after{content:attr(data-label);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:var(--dark2);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:10px;padding:2px 6px;border-radius:3px;white-space:nowrap;z-index:10;}
+
+  /* CARD DETAIL */
+  .card-detail{display:none;padding:0 16px 14px;}
+  .detail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;}
+  .detail-cell{background:var(--dark4);border-radius:6px;padding:8px 6px;text-align:center;}
+  .detail-cell-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--gray);margin-bottom:3px;}
+  .detail-cell-val{font-family:'Bebas Neue',cursive;font-size:20px;color:var(--white);line-height:1;}
+  .detail-cell.highlight .detail-cell-val{color:var(--gold);}
+  .detail-cell.elim .detail-cell-val{color:#3498DB;}
+
+  .detail-history{margin-top:6px;}
+  .detail-history-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:6px;}
+  .history-days{display:flex;gap:4px;flex-wrap:wrap;}
+  .hday{background:var(--dark4);border-radius:4px;padding:4px 8px;text-align:center;min-width:44px;}
+  .hday.today{background:rgba(245,197,24,0.15);border:1px solid rgba(245,197,24,0.3);}
+  .hday-date{font-family:'Barlow Condensed',sans-serif;font-size:9px;color:var(--gray);letter-spacing:1px;}
+  .hday-pts{font-family:'Bebas Neue',cursive;font-size:18px;color:var(--white);line-height:1;}
+  .hday.today .hday-pts{color:var(--gold);}
+  .hday-acc{font-family:'Barlow Condensed',sans-serif;font-size:9px;color:var(--gray);}
+
+  /* FOOTER */
+  .footer{text-align:center;padding-top:36px;border-top:1px solid rgba(255,255,255,0.06);margin-top:36px;}
+  .hero-badge2{display:inline-block;background:var(--gold);color:var(--dark);font-family:'Bebas Neue',cursive;font-size:13px;letter-spacing:4px;padding:6px 20px;border-radius:2px;}
+
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+  .top5{animation:fadeUp 0.5s ease 0.2s both;}
+  .full-table{animation:fadeUp 0.5s ease 0.3s both;}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-badge">⚽ MUNDIAL 2026</div>
+    <h1 class="hero-title">Tabla General<span>de Puntos</span></h1>
+    <div class="hero-line"></div>
+  </header>
+
+  <!-- DAY INFO -->
+  <div class="day-bar">
+    <div>
+      <div class="day-label" id="dayLabel">DÍA 1</div>
+      <div class="day-date" id="dayDate">Jueves 11 de Junio</div>
+    </div>
+    <div class="day-matches" id="dayMatches">Partidos jugados: #1 · #2</div>
+  </div>
+
+  <!-- WINNER BANNER -->
+  <div class="winner-banner" id="winnerBanner">
+    <div class="winner-crown">👑</div>
+    <div class="winner-info">
+      <div class="winner-label">⚡ Líder del Día</div>
+      <div class="winner-name" id="winnerName">MIGUEL</div>
+      <div class="winner-pts">Ganó <strong id="winnerPtsToday">4 pts</strong> hoy · Total acumulado: <strong id="winnerTotal" style="color:var(--gold)">4 pts</strong></div>
+    </div>
+  </div>
+
+  <!-- TOP 5 -->
+  <div class="section-title">Top 5</div>
+  <div class="top5" id="top5Container"></div>
+
+  <!-- FULL TABLE -->
+  <div class="section-title" style="margin-top:8px;">Clasificación Completa</div>
+  <div class="full-table" id="fullTable"></div>
+
+  <footer class="footer">
+    <div class="hero-badge2">⚽ EL SALVADOR · GMT-6</div>
+  </footer>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA — actualizar cada día
+// ═══════════════════════════════════════════════
+const DAY_NUM   = 1;
+const DAY_LABEL = "DÍA 1";
+const DAY_DATE  = "Jueves 11 de Junio";
+const DAY_MATCHES = "Partidos jugados: #1 (México vs Sudáfrica) · #2 (Corea del Sur vs Rep. Checa)";
+
+// Historial de días: cada entrada = { date, pts }
+// Agregar una entrada nueva cada día
+const PLAYERS = [
+  { name:"MIGUEL",    today:4, total:4, grupos:4, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:4, acc:4} ] },
+  { name:"MARIO",     today:3, total:3, grupos:3, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:3, acc:3} ] },
+  { name:"EDGAR",     today:3, total:3, grupos:3, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:3, acc:3} ] },
+  { name:"MISSA",     today:2, total:2, grupos:2, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:2, acc:2} ] },
+  { name:"EVELYN",    today:2, total:2, grupos:2, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:2, acc:2} ] },
+  { name:"AMADEO",    today:1, total:1, grupos:1, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:1, acc:1} ] },
+  { name:"SIGUI",     today:0, total:0, grupos:0, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:0, acc:0} ] },
+  { name:"JOSE",      today:0, total:0, grupos:0, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:0, acc:0} ] },
+  { name:"HERRERA",   today:0, total:0, grupos:0, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:0, acc:0} ] },
+  { name:"HENRY",     today:0, total:0, grupos:0, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:0, acc:0} ] },
+  { name:"EDUARDO",   today:0, total:0, grupos:0, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:0, acc:0} ] },
+  { name:"DIEGO L.",  today:0, total:0, grupos:0, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:0, acc:0} ] },
+  { name:"DIEGO F.",  today:0, total:0, grupos:0, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:0, acc:0} ] },
+  { name:"BETO",      today:0, total:0, grupos:0, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:0, acc:0} ] },
+  { name:"ANDRES",    today:0, total:0, grupos:0, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:0, acc:0} ] },
+  { name:"ALEXIS",    today:0, total:0, grupos:0, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:0, acc:0} ] },
+  { name:"ALEJANDRO", today:0, total:0, grupos:0, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:0, acc:0} ] },
+  { name:"ABEL",      today:0, total:0, grupos:0, clasif:0, r32:0, r16:0, qf:0, sf:0, final:0, camp:0,
+    history:[ {date:"11 Jun", pts:0, acc:0} ] },
+];
+
+// ═══════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════
+document.getElementById('dayLabel').textContent   = DAY_LABEL;
+document.getElementById('dayDate').textContent    = DAY_DATE;
+document.getElementById('dayMatches').textContent = DAY_MATCHES;
+
+// Sort by total desc
+PLAYERS.sort((a,b) => b.total - a.total || b.today - a.today);
+
+// Day winner
+const maxToday = Math.max(...PLAYERS.map(p => p.today));
+const dayWinner = PLAYERS.find(p => p.today === maxToday);
+document.getElementById('winnerName').textContent    = dayWinner.name;
+document.getElementById('winnerPtsToday').textContent = maxToday + ' pts';
+document.getElementById('winnerTotal').textContent   = dayWinner.total + ' pts';
+
+// Max total for progress bar
+const maxTotal = Math.max(...PLAYERS.map(p => p.total), 1);
+
+// TOP 5
+const top5El = document.getElementById('top5Container');
+PLAYERS.slice(0,5).forEach((p, i) => {
+  const rankClass = ['rank-1','rank-2','rank-3','rank-4','rank-5'][i];
+  const medals = ['🥇','🥈','🥉','4','5'];
+  const pct = Math.round((p.total / maxTotal) * 100);
+  const isDayWinner = p.today === maxToday && p.today > 0;
+
+  top5El.innerHTML += `
+    <div class="top5-card ${rankClass}">
+      <div class="top5-rank">${medals[i]}</div>
+      <div class="top5-name">${p.name}${isDayWinner ? ' 🔥' : ''}</div>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+      </div>
+      ${p.today > 0 ? `<div class="top5-pts-today">+${p.today} hoy</div>` : ''}
+      <div class="top5-total">${p.total}</div>
+    </div>`;
+});
+
+// FULL TABLE
+const fullEl = document.getElementById('fullTable');
+PLAYERS.forEach((p, i) => {
+  const rank = i + 1;
+  const rankMeta = rank === 1 ? 'rank-gold' : rank === 2 ? 'rank-silver' : rank === 3 ? 'rank-bronze' : '';
+  const isDayWinner = p.today === maxToday && p.today > 0;
+  const maxHist = Math.max(...p.history.map(h => h.pts), 1);
+
+  // History bars
+  const histBars = p.history.map((h, idx) => {
+    const isToday = idx === p.history.length - 1;
+    const ht = Math.max(4, Math.round((h.pts / maxHist) * 28));
+    return `<div class="hist-bar${isToday?' today':''}" style="height:${ht}px" data-label="${h.date}: ${h.pts}pts"></div>`;
+  }).join('');
+
+  // History days detail
+  const histDays = p.history.map((h, idx) => {
+    const isToday = idx === p.history.length - 1;
+    return `<div class="hday${isToday?' today':''}">
+      <div class="hday-date">${h.date}</div>
+      <div class="hday-pts">${h.pts}</div>
+      <div class="hday-acc">▲${h.acc}</div>
+    </div>`;
+  }).join('');
+
+  fullEl.innerHTML += `
+    <div class="player-card ${rankMeta}${isDayWinner?' day-winner':''}" id="card-${i}">
+      <div class="card-main" onclick="toggleCard(${i})">
+        <div class="card-rank">${rank}</div>
+        <div class="card-name">${p.name}${isDayWinner?' 🔥':''}</div>
+        <div class="card-today-badge ${p.today > 0 ? 'today-positive' : 'today-zero'}">
+          ${p.today > 0 ? '+' + p.today : '—'}
+        </div>
+        <div class="card-total">${p.total}</div>
+        <div class="card-chevron">▼</div>
+      </div>
+      <div class="card-history">${histBars}</div>
+      <div class="card-detail">
+        <div class="detail-grid">
+          <div class="detail-cell highlight"><div class="detail-cell-label">Grupos</div><div class="detail-cell-val">${p.grupos}</div></div>
+          <div class="detail-cell"><div class="detail-cell-label">Clasif.</div><div class="detail-cell-val">${p.clasif}</div></div>
+          <div class="detail-cell elim"><div class="detail-cell-label">Elim.</div><div class="detail-cell-val">${p.r32+p.r16+p.qf+p.sf+p.final}</div></div>
+          <div class="detail-cell"><div class="detail-cell-label">Campeón</div><div class="detail-cell-val">${p.camp}</div></div>
+        </div>
+        <div class="detail-history">
+          <div class="detail-history-label">Historial por día</div>
+          <div class="history-days">${histDays}</div>
+        </div>
+      </div>
+    </div>`;
+});
+
+function toggleCard(i) {
+  const card = document.getElementById('card-' + i);
+  card.classList.toggle('is-open');
+}
+</script>
+</body>
+</html>
